@@ -4,7 +4,7 @@ This is a Python package that helps in tidying up your Python code.
 
 # How to use
 
-use uvx for running the script
+use [uvx](https://docs.astral.sh/uv/guides/tools/) for running the script
 ```bash
 # run linting
 uvx --from git+https://github.com/tokikanno/py-tidy py-tidy lint
