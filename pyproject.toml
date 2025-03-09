@@ -1,0 +1,17 @@
+[project]
+name = "py-tidy"
+version = "0.1.0"
+description = "A lightweight Python utility to tidy code blocks"
+readme = "README.md"
+authors = [
+    { name = "toki", email = "toki.kanno@gmail.com" }
+]
+requires-python = ">=3.8"
+dependencies = []
+
+[project.scripts]
+py-tidy = "py_tidy:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
