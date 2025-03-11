@@ -38,19 +38,25 @@ def main() -> None:
 
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    # Lint command
-    lint_parser = subparsers.add_parser("lint", help="Lint files")
-    lint_parser.add_argument(
-        "filenames", type=str, nargs="*", help="Files to be linted"
-    )
+    for name, help_text in (
+        ("lint", "Lint files"),
+        ("format", "Format files. CAUTION: in-place fixes will be applied!!!"),
+    ):
+        _parser = subparsers.add_parser(name=name, help=help_text)
+        _parser.add_argument(
+            "filenames", type=str, nargs="*", help="files to be processed"
+        )
+        _parser.add_argument(
+            "--ignore-single-line-body",
+            action="store_true",
+            default=False,
+            help="Ignore single line body of control blocks",
+        )
 
-    # Format command
-    format_parser = subparsers.add_parser(
-        "format", help="Format files. CAUTION: in-place fixes will be applied!!!"
-    )
-    format_parser.add_argument(
-        "filenames", type=str, nargs="*", help="Files to be formatted"
-    )
+    # show help if no args
+    if len(sys.argv) == 1:
+        parser.print_help()
+        sys.exit(0)
 
     args = parser.parse_args()
     total_files: int = 0
@@ -62,7 +68,11 @@ def main() -> None:
         with open(filename, "r") as f:
             err_cnt: int
             result: List[str]
-            err_cnt, result = lint(f.read(), autofix=args.command == "format")
+            err_cnt, result = lint(
+                f.read(),
+                autofix=args.command == "format",
+                ignore_single_line_body=args.ignore_single_line_body,
+            )
 
         total_files += 1
 
